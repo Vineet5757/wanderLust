@@ -1,0 +1,139 @@
+<%layout("/layouts/boilerplate")%>
+<style>
+#filters{
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.filter{
+ text-align: center;
+ 
+  cursor: pointer;
+  opacity: 0.7  ;
+  margin-right: 1rem;
+
+}
+.filter:hover{
+  opacity: 1;
+}
+
+@media (max-width: 992px) {
+  #filters{
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+}
+}
+.toggle{
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc ;
+  border-radius: 20px;
+  padding: 1rem 
+}
+
+</style>
+<body>
+    <!-- <h3>
+        All Listing!
+    </h3> -->
+    <!-- <form method="GET" action="/listing/new">
+        <button>create All listings</button>
+    </form> -->
+    <div id="filters">
+      <div class="filter">
+      <div ><i class="fa-solid fa-fire"></i></div>
+         <p>Trending  </p> 
+      </div>
+       <div class="filter">
+      <div ><i class="fa-solid fa-bed"></i></div>
+         <p>Rooms</p> 
+      </div>
+       <div class="filter">
+      <div ><i class="fa-solid fa-mountain-city"></i></div>
+         <p>Iconic Citys</p> 
+      </div>
+       <div class="filter">
+      <div ><i class="fa-solid fa-mountain"></i></div>
+         <p>Mountains</p> 
+      </div>
+       <div class="filter">
+      <div ><i class="fa-solid fa-building"></i></div>
+         <p>Castles</p> 
+      </div>
+        <div class="filter">
+      <div ><i class="fa-solid fa-person-swimming"></i></div>
+         <p>Amazing pools</p> 
+      </div>
+        <div class="filter">
+      <div ><i class="fa-solid fa-tent"></i></div>
+         <p>Camping</p> 
+      </div>
+        <div class="filter">
+      <div ><i class="fa-regular fa-snowflake"></i></div>
+         <p>Arctic</p> 
+      </div>
+        <div class="filter">
+      <div ><i class="fa-solid fa-cow"></i></div>
+         <p>Farms</p> 
+      </div>
+      <div class="toggle">
+        <div class="form-check form-switch form-check-reverse">
+  <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+  <label class="form-check-label" for="switchCheckDefault">Price after Tax</label>
+</div></div>
+    
+    </div>
+
+
+
+
+
+
+
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 ">   
+      <%  for(listing of alllistings){%>
+        <a href="/listings/<%=listing.id%>" class="listing-link"> <div class="listing-card  card">
+      <img src="<%=listing.image.url%>" class="card-img-top" alt="listing image" style="height: 20rem;">
+      <div class="card-img-overlay"></div>
+      <div class="card-body">
+        <p class="card-text"><b>
+          <%= listing.title%>
+        </b><br>
+    &#8377; <%=listing.price.toLocaleString("en-IN")%>/Night
+   
+    </p>
+  </div>
+</div>
+  <%}%></div></a>
+   
+  <script>
+  const reverseCheck = document.getElementById('switchCheckDefault');
+  // Select all price elements (assuming they are inside <p class="card-text">)
+  const priceElements = document.querySelectorAll('.card-text');
+  // Store original prices
+  const originalPrices = Array.from(priceElements).map(el => {
+    // Extract the price number from the text
+    const match = el.innerText.match(/₹\s?([\d,]+)/);
+    return match ? Number(match[1].replace(/,/g, '')) : 0;
+  });
+
+  reverseCheck.addEventListener('click', () => {
+    priceElements.forEach((el, idx) => {
+      let price = originalPrices[idx];
+      let newPrice;
+      if (reverseCheck.checked) {
+        newPrice = (price * 1.18).toFixed(2);
+      } else {
+        newPrice = price.toLocaleString("en-IN");
+      }
+      el.innerHTML = el.innerHTML.replace(/₹\s?[\d,]+(\.\d+)?/, '₹ ' + newPrice);
+    });
+  });
+</script>
+     
+</body>
+
+

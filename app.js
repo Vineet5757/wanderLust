@@ -119,8 +119,15 @@ app.use('/',Userroutes);
 
 // handling all other routes
  app.all(/.*/,(req,res,next)=>{
-    next( new ExpressError(404,"page not found"));
+    if(!req.originalUrl.startsWith("/listings")){
+         res.redirect("/listings");
+    }
+    else{
+        next(new ExpressError("Page Not Found",404));   
+    }
+  
 });  
+
 
 
 
